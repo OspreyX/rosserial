@@ -67,6 +67,10 @@ private:
   void handle_accept(Session* new_session,
       const boost::system::error_code& error)
   {
+    // Disable Nagle on the newly-connected session.
+    tcp::no_delay option(true);
+    new_session->socket().set_option(option);
+
     if (!error)
     {
       new_session->start();
